@@ -10,11 +10,12 @@ class Solutions:
         Given an integer array nums, return true if any value appears at least
         twice in the array, and return false if every element is distinct.
         """
-        nums_set = set()
+        existence_map = {}
         for num in nums:
-            if num in nums_set:
+            if num in existence_map:
                 return True
-            nums_set.add(num)
+            else:
+                existence_map[num] = True
         return False
 
     def is_anagram(self, s: str, t: str) -> bool:
@@ -176,23 +177,25 @@ class Solutions:
         Explanation:
         One possible encode method is: "we:;say:;:::;yes"
         """
-        encoded = ""
+        encoded_string = ""
         for string in strs:
-            encoded += f"{len(string),{string}}"
-        return encoded
+            encoded_string += f"{len(string)},{string}"
+        return encoded_string
 
     def decode(self, s: str) -> List[str]:
-        result = []
+        decoded_strings = []
+
         i = 0
         while i < len(s):
-            # First glob up to delimiter , to determine length of substring
+            # Find our own delimiter of "," then get length of string
             j = i
             while s[j] != ",":
                 j += 1
             length = int(s[i:j])
-            result.append(s[j + 1:j + length + 1])
+            decoded_strings.append(s[j+1:j+length + 1])
             i = j + length + 1
-        return result
+
+        return decoded_strings
 
     def product_except_self(self, nums: List[int]) -> List[int]:
         """
@@ -220,18 +223,36 @@ class Solutions:
         Follow up: Can you solve the problem in O(1) extra space complexity?
         (The output array does not count as extra space for space complexity analysis.)
         """
+        # Left and Right products
+        n = len(nums)
+
+        left_product = [1] * n
+        for i in range(1,n):
+            left_product[i] = left_product[i - 1] * nums[i - 1]
+
+        right_product = [1] * n
+        for i in range(n - 2, -1, -1):
+            right_product[i] = right_product[i + 1] * nums[i + 1]
+
+        result = []
+        for i in range(n):
+            result.append(left_product[i] * right_product[i])
+
+        return result
+
+        # Single array
         n, left, right = len(nums), 1, 1
-        ret_list = [1]*n
+        products = [1] * n
 
         for i in range(n):
-            ret_list[i] = left
+            products[i] = left
             left *= nums[i]
 
         for i in range(n - 1, -1, -1):
-            ret_list[i] *= right
+            products[i] *= right
             right *= nums[i]
 
-        return ret_list
+        return products
 
     def valid_sudoku(self, board: List[List[str]]) -> bool:
         """
@@ -248,35 +269,35 @@ class Solutions:
         """
         def _validate_rows() -> bool:
             for row in board:
-                values = set()
+                nums = {}
                 for num in row:
-                    if num != ".":
-                        if num in values:
-                            return False
-                        values.add(num)
+                    if num in nums and num != ".":
+                        return False
+                    else:
+                        nums[num] = True
             return True
 
         def _validate_columns() -> bool:
             for i in range(9):
-                values = set()
+                nums = {}
                 for j in range(9):
                     num = board[j][i]
-                    if num != ".":
-                        if num in values:
-                            return False
-                        values.add(num)
+                    if num in nums and num != ".":
+                        return False
+                    else:
+                        nums[num] = True
             return True
 
         def _validate_3x3s() -> bool:
-            for i in (0, 3, 6):
-                for j in (0, 3, 6):
-                    values = set()
-                    square_values = [board[x][y] for x in range(i, i + 3) for y in range(j, j + 3)]
-                    for num in square_values:
-                        if num != ".":
-                            if num in values:
-                                return False
-                            values.add(num)
+            for i in range(3):
+                for j in range(3):
+                    nums = {}
+                    square_nums = [board[x][y] for x in range(i*3, (i+1)*3) for y in range(j*3, (j+1)*3)]
+                    for num in square_nums:
+                        if num in nums and num != ".":
+                            return False
+                        else:
+                            nums[num] = True
             return True
 
         return _validate_rows() and _validate_columns() and _validate_3x3s()
@@ -302,9 +323,13 @@ class Solutions:
 
         Cannot use .sort as it would break constraint of being O(n) time.
 
-        Can check num - 1 to be the start of a sequence.
+        Original solution uses dictionary to emulate a LinkedList.
 
-        Original solution uses dictionary to emulate a LinkedList
+        Optimal solution checks for existence, ie:
+        1. For each num, check if num - 1 exists. If it does not, then we know num is the start
+            of a sequence
+        2. Then we can check if num + 1, num + 2, num + 3, ... and so on exists
+
         """
         max_value = float("inf")
         nums_dict = defaultdict(lambda: {"prev": max_value, "next": max_value})
@@ -334,13 +359,11 @@ class Solutions:
         return longest
 
         # nums_set = set(nums)
-        # longest = 0
-
+        # max_length = 0
         # for num in nums:
-        #     if (num - 1) not in nums_set: # This means it's the start of a sequence
-        #         length = 1
-        #         while (num + length) in nums_set:
-        #             length += 1
-        #         longest = max(longest, length)
-
-        # return longest
+        #     if (num - 1) not in nums_set:
+        #         count = 1
+        #         while (num + count) in nums_set:
+        #             count += 1
+        #         max_length = max(count, max_length)
+        # return max_length
