@@ -135,32 +135,32 @@ class Solutions:
         If we can't use sorted, we can use a maxHeap instead - heaps take a tuple, where first item is the priority
         to be sorted on, and the second can be the value
         """
-        freq_map = defaultdict(int)
-        for num in nums:
-            freq_map[num] += 1
-
-        count = 0
-        results = []
-        for item in sorted(freq_map, key=freq_map.get, reverse=True):
-            if count >= k:
-                continue
-            results.append(item)
-            count += 1
-
-        return results
-
         # freq_map = defaultdict(int)
         # for num in nums:
         #     freq_map[num] += 1
 
-        # maxHeap = [(-value, key) for key, value in freq_map.items()]
-        # heapq.heapify(maxHeap)
-
+        # count = 0
         # results = []
-        # for i in range(k):
-        #     results.append(heapq.heappop(maxHeap)[1])
+        # for item in sorted(freq_map, key=freq_map.get, reverse=True):
+        #     if count >= k:
+        #         continue
+        #     results.append(item)
+        #     count += 1
 
         # return results
+
+        freq_map = defaultdict(int)
+        for num in nums:
+            freq_map[num] += 1
+
+        maxHeap = [(-value, key) for key, value in freq_map.items()]
+        heapq.heapify(maxHeap)
+
+        results = []
+        for i in range(k):
+            results.append(heapq.heappop(maxHeap)[1])
+
+        return results
 
     def encode(self, strs: List[str]) -> str:
         """
