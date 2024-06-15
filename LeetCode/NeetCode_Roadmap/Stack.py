@@ -1,4 +1,4 @@
-from collections import deque
+from collections import defaultdict, deque
 from typing import List
 
 
@@ -31,24 +31,24 @@ class Solutions:
             1 <= s.length <= 104
             s consists of parentheses only '()[]{}'.
         """
-        brackets = {
-            ")" : "(",
-            "]": "[",
-            "}" : "{",
+        parentheses = {
+            "{": "}",
+            "(": ")",
+            "[": "]"
         }
 
         stack = deque()
-
         for item in s:
-            if item in brackets.values():
+            if item in parentheses.keys():
                 stack.append(item)
             else:
                 try:
-                    popped = stack.pop()
+                    open_part = stack.pop()
                 except IndexError:
                     return False
-                if popped != brackets[item]:
+                if parentheses[open_part] != item:
                     return False
+
         return len(stack) == 0
 
     def eval_RPN(self, tokens: List[str]) -> int:
@@ -75,27 +75,27 @@ class Solutions:
         Output: 6
         Explanation: (4 + (13 / 5)) = 6
         """
-        def _is_operator(letter: str) -> bool:
+        def _is_operator(token: str) -> bool:
             operators = ["+", "-", "*", "/"]
-            return letter in operators
+            return token in operators
 
-        def _calculate(operator: str, first: int, second: int) -> int:
+        def _exec_operator(operator: str, first: int, second: int) -> int:
             match operator:
                 case "+":
-                    return second + first
+                    return first + second
                 case "-":
-                    return second - first
+                    return first - second
                 case "*":
-                    return second * first
+                    return first * second
                 case "/":
-                    return int(second / first)
+                    return int(first / second)
 
         stack = deque()
         for token in tokens:
             if _is_operator(token):
-                first = stack.pop()
                 second = stack.pop()
-                stack.append(_calculate(token, first, second))
+                first = stack.pop()
+                stack.append(_exec_operator(token, first, second))
             else:
                 stack.append(int(token))
 
@@ -110,6 +110,31 @@ class Solutions:
 
         return _generate(n)
 
+    def daily_temperatures(self, temperatures: List[int]) -> List[int]:
+        # Slow brute force approach
+        n = len(temperatures)
+        results = [0] * n
+
+        # Temperatures can have duplicates
+        temp_map = defaultdict(list)
+        for i, temp in enumerate(temperatures):
+            temp_map[temp].append(i)
+
+        for i, temp in enumerate(temperatures):
+            closest_index = n
+            for other_temp in range(temp + 1, 101):
+                if other_temp in temp_map:
+                    indices = temp_map[other_temp]
+                    for index in indices:
+                        if index > i:
+                            closest_index = min(closest_index, index)
+
+            if closest_index != n:
+                results[i] = closest_index - i
+
+        return results
+
+
 class MinStack:
     """
     #155
@@ -121,19 +146,19 @@ class MinStack:
     """
     def __init__(self):
         self.stack = deque()
-        self.minStack = deque()
+        self.min_stack = deque()
 
     def push(self, val: int) -> None:
         self.stack.append(val)
-        min_val = min(val, self.minStack[-1] if self.minStack else val)
-        self.minStack.append(min_val)
+        min_val = min(val, self.min_stack[-1] if self.min_stack else val)
+        self.min_stack.append(min_val)
 
     def pop(self) -> None:
         self.stack.pop()
-        self.minStack.pop() # Pop corresponding minimum value
+        self.min_stack.pop()
 
     def top(self) -> int:
         return self.stack[-1]
 
     def getMin(self) -> int:
-        return self.minStack[-1]
+        return self.min_stack[-1]
