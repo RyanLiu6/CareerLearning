@@ -209,14 +209,31 @@ class Solutions:
         # return results
 
         # Stack Solution - faster and more efficient
-        results = [0] * len(temperatures)
+        n = len(temperatures)
+        results = [0] * n
         stack = deque()
 
-        for i, temp in enumerate(temperatures):
-            while len(stack) > 0 and temperatures[stack[-1]] < temp:
-                colder_index = stack.pop()
-                results[colder_index] = i - colder_index
+        # for i, temp in enumerate(temperatures):
+        #     while len(stack) > 0 and temperatures[stack[-1]] < temp:
+        #         colder_index = stack.pop()
+        #         results[colder_index] = i - colder_index
 
+        #     stack.append(i)
+
+        # Going backwards so we don't need to look ahead all the time
+        for i in range(n - 1, -1, -1):
+            # If current temperature is warmer than top of stack, we pop it
+            # Since we want stack to have warmer temperatures than current
+            while stack and temperatures[i] >= temperatures[stack[-1]]:
+                stack.pop()
+
+            # If stack is not empty, then difference between current index and
+            # top of stack index is the number of days you need to wait
+            if stack:
+                results[i] = stack[-1] - i
+
+            # No matter what, we want to put the current index on the stack
+            # Only manipulate stack if temperature is colder
             stack.append(i)
 
         return results
@@ -259,15 +276,6 @@ class Solutions:
             The cars starting at 0 (speed 4) and 2 (speed 2) become a fleet, meeting each other at 4. The car starting at 4 (speed 1) travels to 5.
             Then, the fleet at 4 (speed 2) and the car at position 5 (speed 1) become one fleet, meeting each other at 6. The fleet moves at speed 1 until it reaches target.
         """
-        n = len(position)
-        cars = {}
-        for i in range(n):
-            curr = position[i]
-            if curr in cars:
-                if speed[i] < cars[curr][0]:
-                    cars[curr][0] = speed[i]
-            else:
-                cars[position[i]] = [speed[i], 0]
 
 
 

@@ -3,7 +3,7 @@ from typing import List
 
 
 class Solutions:
-    def isPalindrome(self, s: str) -> bool:
+    def is_palindrome(self, s: str) -> bool:
         """
         #150
 
@@ -12,18 +12,14 @@ class Solutions:
 
         Given a string s, return true if it is a palindrome, or false otherwise.
         """
-        cleaned_string = []
+        processed_string = []
         for letter in s:
             if letter.isalnum():
-                cleaned_string.append(letter.lower())
+                processed_string.append(letter.lower())
 
-        n = len(cleaned_string)
-        start, end = 0, n - 1
+        start, end = 0, len(processed_string) - 1
         while start < end:
-            start_letter = cleaned_string[start]
-            end_letter = cleaned_string[end]
-
-            if start_letter != end_letter:
+            if processed_string[start] != processed_string[end]:
                 return False
 
             start += 1
@@ -62,18 +58,14 @@ class Solutions:
         Output: [1,2]
         Explanation: The sum of -1 and 0 is -1. Therefore index1 = 1, index2 = 2. We return [1, 2].
         """
-        n = len(numbers)
-        start, end = 0, n - 1
+        start, end = 0, len(numbers) - 1
 
         # Guaranteed that two of the same element (same index) cannot be the solution
         while start < end:
-            start_num = numbers[start]
-            end_num = numbers[end]
-
-            total = start_num + end_num
-            if total == target:
-                return [start+1, end+1]
-            elif total < target:
+            current = numbers[start] + numbers[end]
+            if current == target:
+                return [start + 1, end + 1]
+            elif current < target:
                 start += 1
             else:
                 end -= 1
@@ -87,7 +79,7 @@ class Solutions:
         Notice that the solution set must not contain duplicate triplets.
 
         Example 1:
-        Input: nums = [-1,0,1,2,-1,-4]
+        Input: nums = [-1,0,1,2,-1,-4] -> [-4, -1, -1, 0, 1, 2]
         Output: [[-1,-1,2],[-1,0,1]]
         Explanation:
         nums[0] + nums[1] + nums[2] = (-1) + 0 + 1 = 0.
@@ -110,10 +102,81 @@ class Solutions:
         works but has a pretty bad time complexity of O(n^2) since for each element of nums, we have to
         iterate through nums to try two_sum.
 
-        Still want to turn 3sum into 2sum by isolating the first element to be each element of nums.
-        Now we're faced with 2sum for an array where elements can repeat - let's sort the array and deal with it
+        Since we only need to return the distinct elements and not the positions, we can use Set or Dict.
+
+        Hint received: Split into Negatives, Positives, and Zeroes
         """
-        ...
+        # # Not using 2 pointers
+        # def check_pairs(to_check, check_against):
+        #     n = len(to_check)
+        #     for i in range(n):
+        #         for j in range(i+1,n):
+        #             target = -1*(to_check[i] + to_check[j])
+        #             if target in check_against:
+        #                 results.add(tuple(sorted((to_check[i], to_check[j], target))))
+
+        # negatives, positives, zeroes = [], [], 0
+
+        # for num in nums:
+        #     if num < 0:
+        #         negatives.append(num)
+        #     elif num > 0:
+        #         positives.append(num)
+        #     else:
+        #         zeroes += 1
+
+        # neg_set, pos_set = set(negatives), set(positives)
+        # results = set()
+
+        # # If we have 3 zeroes, then (0, 0, 0)
+        # if zeroes >= 3:
+        #     results.add((0, 0, 0))
+
+        # # If we have at least one zero, find cases of (-X, 0, X)
+        # if zeroes:
+        #     for num in negatives:
+        #         if -1*num in positives:
+        #             results.add((num, 0, -1*num))
+
+        # # Check every pair of negative numbers
+        # check_pairs(negatives, pos_set)
+
+        # # Check every pair of positive numbers
+        # check_pairs(positives, neg_set)
+
+        # return results
+
+        # 2 pointer solution
+        # Sort - O(n logn)
+        nums.sort()
+        results = []
+
+        # For each x, find y + z such that x + y + z = 0
+        for i, x in enumerate(nums):
+            # Ignore duplicates
+            if i > 0 and x == nums[i - 1]:
+                continue
+
+            target = -x
+            left, right = i + 1, len(nums) - 1
+
+            while left < right:
+                y = nums[left]
+                z = nums[right]
+                if y + z == target:
+                    # If we found one solution, add it
+                    results.append((x, y, z))
+
+                    # Find the next unique integer to consider
+                    left += 1
+                    while left < right and nums[left] == nums[left - 1]:
+                        left += 1
+                elif y + z < target:
+                    left += 1
+                else:
+                    right -= 1
+
+        return results
 
     def max_area(self, height: List[int]) -> int:
         """
@@ -148,3 +211,21 @@ class Solutions:
                 end -= 1
 
         return max_water
+
+    def trap(self, height: List[int]) -> int:
+        """
+        #42. Trapping Rain Water
+
+        Given n non-negative integers representing an elevation map where the width of each bar is 1, compute
+        how much water it can trap after raining.
+
+        Example 1:
+        Input: height = [0,1,0,2,1,0,1,3,2,1,2,1]
+        Output: 6
+        Explanation: The above elevation map (black section) is represented by array [0,1,0,2,1,0,1,3,2,1,2,1].
+        In this case, 6 units of rain water (blue section) are being trapped.
+
+        Example 2:
+        Input: height = [4,2,0,3,2,5]
+        Output: 9
+        """
