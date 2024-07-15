@@ -35,7 +35,7 @@ class Solutions:
 
         return -1
 
-    def search_matrix(self, matrix: List[List[int]], target: int) -> bool:
+    def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
         """
         #74. Search a 2D Matrix
 
@@ -108,7 +108,7 @@ class Solutions:
 
         return binary_search(matrix[row], target)
 
-    def min_eating_speed(self, piles: List[int], h: int) -> int:
+    def minEatingSpeed(self, piles: List[int], h: int) -> int:
         """
         #875. Koko Eating Bananas
 
@@ -154,7 +154,7 @@ class Solutions:
 
         return k
 
-    def find_min(self, nums: List[int]) -> int:
+    def findMin(self, nums: List[int]) -> int:
         """
         #153. Find Minimum in Rotated Sorted Array
 
@@ -232,7 +232,7 @@ class Solutions:
         # When the while loop terminates, left should equal right
         return nums[left]
 
-    def find_min_2(self, nums: List[int]) -> int:
+    def findMin_2(self, nums: List[int]) -> int:
         """
         #154. Find Minimum in Rotated Sorted Array II
 

@@ -2,7 +2,7 @@ from typing import List
 
 
 class Solutions:
-    def max_profit(self, prices: List[int]) -> int:
+    def maxProfit(self, prices: List[int]) -> int:
         """
         #121: Best Time to Buy and Sell Stock
 
@@ -22,10 +22,26 @@ class Solutions:
         Output: 0
         Explanation: In this case, no transactions are done and the max profit = 0.
         """
+        max_profit, min_price = 0, 0
 
-    def length_of_longest_substring(self, s: str) -> int:
+        for i, price in enumerate(prices):
+            # First element can only be buy and not sell - set min_price here
+            if i == 0:
+                min_price = price
+
+            # If current price is smaller than minimum price, then we buy -> can't sell
+            if price < min_price:
+                min_price = price
+            # Since we're not buying -> set max_profit here
+            else:
+                profit = price - min_price
+                max_profit = max(max_profit, profit)
+
+        return max_profit
+
+    def lengthOfLongestSubstring(self, s: str) -> int:
         """
-        3. Longest Substring Without Repeating Characters
+        #3. Longest Substring Without Repeating Characters
 
         Given a string s, find the length of the longest substring without repeating characters.
 
@@ -46,3 +62,4 @@ class Solutions:
         Notice that the answer must be a substring, "pwke" is a subsequence and not a substring.
         """
         substring = []
+

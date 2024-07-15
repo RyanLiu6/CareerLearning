@@ -3,7 +3,7 @@ from typing import List
 
 
 class Solutions:
-    def is_valid(self, s: str) -> bool:
+    def isValid(self, s: str) -> bool:
         """
         #20
 
@@ -51,7 +51,7 @@ class Solutions:
 
         return len(stack) == 0
 
-    def eval_RPN(self, tokens: List[str]) -> int:
+    def evalRPN(self, tokens: List[str]) -> int:
         """
         #150
 
@@ -102,7 +102,7 @@ class Solutions:
 
         return stack[-1]
 
-    def generate_parenthesis(self, n: int) -> List[str]:
+    def generateParenthesis(self, n: int) -> List[str]:
         """
         #22
 
@@ -151,7 +151,7 @@ class Solutions:
         return result
 
 
-    def daily_temperatures(self, temperatures: List[int]) -> List[int]:
+    def dailyTemperatures(self, temperatures: List[int]) -> List[int]:
         """
         #739
 
@@ -238,7 +238,7 @@ class Solutions:
 
         return results
 
-    def car_fleet(self, target: int, position: List[int], speed: List[int]) -> int:
+    def carFleet(self, target: int, position: List[int], speed: List[int]) -> int:
         """
         #853
 

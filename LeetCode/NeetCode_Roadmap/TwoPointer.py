@@ -3,7 +3,7 @@ from typing import List
 
 
 class Solutions:
-    def is_palindrome(self, s: str) -> bool:
+    def isPalindrome(self, s: str) -> bool:
         """
         #150
 
@@ -27,7 +27,7 @@ class Solutions:
 
         return True
 
-    def two_sum_with_sorted_input(self, numbers: List[int], target: int) -> List[int]:
+    def twoSumWithSortedInput(self, numbers: List[int], target: int) -> List[int]:
         """
         #167
         Given a 1-indexed array of integers numbers that is already sorted in non-decreasing order, find two numbers
@@ -70,7 +70,7 @@ class Solutions:
             else:
                 end -= 1
 
-    def three_sum(self, nums: List[int]) -> List[List[int]]:
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
         """
         #15
         Given an integer array nums, return all the triplets [nums[i], nums[j], nums[k]] such that
@@ -178,7 +178,7 @@ class Solutions:
 
         return results
 
-    def max_area(self, height: List[int]) -> int:
+    def maxArea(self, height: List[int]) -> int:
         """
         #11. Container With Most Water
 

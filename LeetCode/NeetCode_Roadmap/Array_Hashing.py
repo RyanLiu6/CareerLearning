@@ -4,7 +4,7 @@ from collections import defaultdict
 
 
 class Solutions:
-    def contains_duplicate(self, nums: List[int]) -> bool:
+    def containsDuplicate(self, nums: List[int]) -> bool:
         """
         #217
 
@@ -19,7 +19,7 @@ class Solutions:
                 existence_map[num] = True
         return False
 
-    def is_anagram(self, s: str, t: str) -> bool:
+    def isAnagram(self, s: str, t: str) -> bool:
         """
         #242
 
@@ -49,7 +49,7 @@ class Solutions:
 
         return True
 
-    def two_sum(self, nums: List[int], target: int) -> List[int]:
+    def twoSum(self, nums: List[int], target: int) -> List[int]:
         """
         #1
 
@@ -68,7 +68,7 @@ class Solutions:
                 return (i, nums_dict[diff])
             nums_dict[num] = i
 
-    def group_anagrams(self, strs: List[str]) -> List[List[str]]:
+    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
         """
         #49
 
@@ -112,7 +112,7 @@ class Solutions:
 
         # return buckets.values()
 
-    def top_k_frequent(self, nums: List[int], k:int) -> List[int]:
+    def topKFrequent(self, nums: List[int], k:int) -> List[int]:
         """
         #347
 
@@ -203,7 +203,7 @@ class Solutions:
 
         return decoded_strings
 
-    def product_except_self(self, nums: List[int]) -> List[int]:
+    def productExceptSelf(self, nums: List[int]) -> List[int]:
         """
         #238
 
@@ -261,7 +261,7 @@ class Solutions:
 
         return products
 
-    def valid_sudoku(self, board: List[List[str]]) -> bool:
+    def validSudoku(self, board: List[List[str]]) -> bool:
         """
 
         Determine if a 9 x 9 Sudoku board is valid. Only the filled cells need to be
@@ -310,7 +310,7 @@ class Solutions:
 
         return _validate_rows() and _validate_columns() and _validate_3x3s()
 
-    def longest_consecutive(self, nums: List[int]) -> int:
+    def longestConsecutive(self, nums: List[int]) -> int:
         """
         #128
 
