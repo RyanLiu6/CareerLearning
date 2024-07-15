@@ -25,7 +25,7 @@ class Solution:
         return _recursive_with_cache(n)
 
 
-    def climb_stairs(self, n: int) -> int:
+    def climbStairs(self, n: int) -> int:
         """
         #70
         You are climbing a staircase. It takes n steps to reach the top. Each time you can either climb 1 or 2 steps.

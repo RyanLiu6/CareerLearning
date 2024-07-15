@@ -3,7 +3,7 @@ from typing import List
 
 
 class StaticArrays:
-    def remove_duplicates(self, nums: List[int]) -> int:
+    def removeDuplicates(self, nums: List[int]) -> int:
         """
         #26
         Given an integer array nums sorted in non-decreasing order, remove the duplicates in-place
@@ -34,7 +34,7 @@ class StaticArrays:
                 count += 1
         return count
 
-    def remove_element(self, nums: List[int], val: int) -> int:
+    def removeElement(self, nums: List[int], val: int) -> int:
         """
         #27
         Given an integer array nums and an integer val, remove all occurrences of val in nums in-place.
@@ -59,7 +59,7 @@ class StaticArrays:
         return count
 
 class DynamicArrays:
-    def get_concatenation(self, nums: List[int]) -> List[int]:
+    def getConcatenation(self, nums: List[int]) -> List[int]:
         """
         #1929
         Given an integer array nums of length n, you want to create an array ans of length 2n where
@@ -86,7 +86,7 @@ class DynamicArrays:
         # return nums + nums
 
 class Stacks:
-    def cal_points(self, operations: List[str]) -> int:
+    def calPoints(self, operations: List[str]) -> int:
         """
         #682 Baseball Game
 

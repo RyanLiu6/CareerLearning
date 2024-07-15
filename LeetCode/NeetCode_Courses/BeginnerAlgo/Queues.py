@@ -3,7 +3,7 @@ from typing import List
 
 
 class Solution:
-    def count_students(self, students: List[int], sandwiches: List[int]) -> int:
+    def countStudents(self, students: List[int], sandwiches: List[int]) -> int:
         """
         #1700
         The school cafeteria offers circular and square sandwiches at lunch break,

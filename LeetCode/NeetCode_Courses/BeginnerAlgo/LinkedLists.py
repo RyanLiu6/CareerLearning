@@ -8,7 +8,7 @@ class ListNode:
 
 
 class SinglyLinkedLists:
-    def reverse_list(self, head: Optional[ListNode]) -> Optional[ListNode]:
+    def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
         """
         #206
 
@@ -53,7 +53,7 @@ class SinglyLinkedLists:
                     return __helper(nnext, curr)
             return __helper(head, None)
 
-    def merge_two_lists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
+    def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
         """
         #21
         You are given the heads of two sorted linked lists list1 and list2. Merge the two lists into
