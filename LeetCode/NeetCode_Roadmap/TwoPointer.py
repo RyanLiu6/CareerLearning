@@ -5,7 +5,7 @@ from typing import List
 class Solutions:
     def isPalindrome(self, s: str) -> bool:
         """
-        #150
+        #150. Valid Palindrome
 
         A phrase is a palindrome if, after converting all uppercase letters into lowercase letters and removing all non-alphanumeric characters,
         it reads the same forward and backward. Alphanumeric characters include letters and numbers.
@@ -29,7 +29,8 @@ class Solutions:
 
     def twoSumWithSortedInput(self, numbers: List[int], target: int) -> List[int]:
         """
-        #167
+        #167. Two Sum II - Input Array Is Sorted
+
         Given a 1-indexed array of integers numbers that is already sorted in non-decreasing order, find two numbers
         such that they add up to a specific target number. Let these two numbers be numbers[index1] and numbers[index2] where 1 <= index1 < index2 <= numbers.length.
 

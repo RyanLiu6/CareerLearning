@@ -36,6 +36,12 @@ class Hash:
             nums_dict[num] = i
 
 
+class DoublyNode:
+    def __init__(self, key, val):
+        self.key, self.val = key, val
+        self.prev = self.next = None
+
+
 class LRUCache:
     """
     #146. LRU Cache
@@ -53,11 +59,46 @@ class LRUCache:
 
     The functions get and put must each run in O(1) average time complexity.
     """
-
     def __init__(self, capacity: int):
+        self.capacity = capacity
+        self.cache = {}
 
+        self.least, self.most = DoublyNode(0, 0), DoublyNode(0, 0)
+        self.least.next = self.most
+        self.most.prev = self.least
+
+    def _remove(self, node: DoublyNode):
+        # Removes node from list
+        prev = node.prev
+        nxt = node.next
+        prev.next, nxt.prev = nxt, prev
+
+    def _insert(self, node: DoublyNode):
+        # Inserts node at most recently used (self.most)
+        prev = self.most.prev
+        prev.next = node
+        node.next, node.prev = self.most, prev
+        self.most.prev = node
 
     def get(self, key: int) -> int:
-
+        if key in self.cache:
+            node = self.cache[key]
+            self._remove(node)
+            self._insert(node)
+            return node.value
+        else:
+            return -1
 
     def put(self, key: int, value: int) -> None:
+        if key in self.cache:
+            self._remove(self.cache[key])
+
+        node = DoublyNode(key, value)
+        self.cache[key] = node
+        self._insert(node)
+
+        if len(self.cache) > self.capacity:
+            # Remove the least recently used node (self.least)
+            lrn = self.least.next
+            self._remove(lrn)
+            del self.cache[lrn.key]
