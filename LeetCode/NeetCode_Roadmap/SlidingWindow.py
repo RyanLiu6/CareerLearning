@@ -94,7 +94,26 @@ class Solutions:
         The substring "BBBB" has the longest repeating letters, which is 4.
         There may exists other ways to achieve this answer too.
         """
-        ...
+        freq_map = defaultdict(int)
+        left, n = 0, len(s)
+        max_length = max_freq = 0
+
+        for right in range(n):
+            letter = s[right]
+            freq_map[letter] += 1
+
+            # Get the maximum frequency we've encountered so far (up to this point)
+            max_freq = max(max_freq, freq_map[letter])
+
+            # Check if window size (right - left + 1) can handle up to and including k swaps
+            # This relies on max_freq since max_freq represents the portion we don't want to swap
+            while right - left + 1 - max_freq > k:
+                freq_map[s[left]] -= 1
+                left += 1
+
+            max_length = max(max_length, right - left + 1)
+
+        return max_length
 
     def checkInclusion(self, s1: str, s2: str) -> bool:
         """
