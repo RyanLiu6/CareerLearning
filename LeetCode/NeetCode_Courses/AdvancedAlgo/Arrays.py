@@ -1,5 +1,118 @@
-from pprint import pprint
+from collections import defaultdict
 from typing import List
+
+
+class SlidingWindowFixedSize:
+    def containsNearbyDuplicate(self, nums: List[int], k: int) -> bool:
+        """
+        #219. Contains Duplicate II
+
+        Given an integer array nums and an integer k, return true if there are two distinct
+        indices i and j in the array such that nums[i] == nums[j] and abs(i - j) <= k.
+
+        Example 1:
+        Input: nums = [1,2,3,1], k = 3
+        Output: true
+        """
+        freq_dict = {}
+
+        for i, num in enumerate(nums):
+            # We only keep the most recent location of any number
+            # This is because if abs(i - j) > k, then for any other index that is past j
+            # (since we are iterating left to right), abs(i - x) will guaranteed to be > k
+            if num in freq_dict:
+                if abs(i - freq_dict[num]) <= k:
+                    return True
+
+            freq_dict[num] = i
+
+        return False
+
+        # Sliding window approach
+        window = set()
+        left = 0
+
+        for right in range(len(nums)):
+            if right - left > k:
+                window.remove(nums[left])
+                left += 1
+            if nums[right] in window:
+                return True
+            window.add(nums[right])
+
+        return False
+
+    def numOfSubarrays(self, arr: List[int], k: int, threshold: int) -> int:
+        """
+        #1343. Number of Sub-arrays of Size K and Average Greater than or Equal to Threshold
+
+        Given an array of integers arr and two integers k and threshold, return the number
+        of sub-arrays of size k and average greater than or equal to threshold.
+
+        Example 1:
+        Input: arr = [2,2,2,2,5,5,5,8], k = 3, threshold = 4
+        Output: 3
+        Explanation: Sub-arrays [2,5,5],[5,5,5] and [5,5,8] have averages 4, 5 and 6 respectively.
+        All other sub-arrays of size 3 have averages less than 4 (the threshold).
+        """
+        n = len(arr)
+        count = 0
+        curr_sum = sum(arr[:k - 1])
+
+        for left in range(n - k + 1):
+            # Summing each time is too costly
+            # average = sum(arr[i:i + k])/k
+            curr_sum += arr[left + k - 1]
+            if (curr_sum / k) >= threshold:
+                count += 1
+            curr_sum -= arr[left]
+
+        return count
+
+
+class SlidingWindowVariableSize:
+    def minSubArrayLen(self, target: int, nums: List[int]) -> int:
+        """
+        #209. Minimum Size Subarray Sum
+
+        Given an array of positive integers nums and a positive integer target, return the minimal
+        length of a subarray whose sum is greater than or equal to target. If there is no such
+        subarray, return 0 instead.
+
+        Example 1:
+        Input: target = 7, nums = [2,3,1,2,4,3]
+        Output: 2
+        Explanation: The subarray [4,3] has the minimal length under the problem constraint.
+        """
+        n = len(nums)
+        min_size = n + 1
+        left, curr_sum = 0, 0
+
+        for right in range(n):
+            curr_sum += nums[right]
+            # If sum from left to right >= target, we minus nums[left] and increment[left]
+            # We do this until curr_sum < target
+            while curr_sum >= target:
+                min_size = min(min_size, right - left + 1)
+                curr_sum -= nums[left]
+                left += 1
+            # If sum from left to right < target, we don't need to do anything special
+            # Since we'll increment right via the for loop and expand the window
+
+        return min_size if min_size != n + 1 else 0
+
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        """
+        #3. Longest Substring Without Repeating Characters
+
+        Given a string s, find the length of the longest substring without repeating characters.
+
+        Example 1:
+        Input: s = "abcabcbb"
+        Output: 3
+        Explanation: The answer is "abc", with the length of 3.
+        """
+        ...
 
 
 class PrefixSums:
@@ -127,6 +240,7 @@ class PrefixSums:
                 prefix_sums[curr_sum] = 1
 
         return result
+
 
 class NumArray:
     """
