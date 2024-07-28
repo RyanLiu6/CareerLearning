@@ -215,18 +215,76 @@ class Solutions:
 
     def trap(self, height: List[int]) -> int:
         """
-        #42. Trapping Rain Water
+        #42. Trapping Rain Water (HARD)
 
-        Given n non-negative integers representing an elevation map where the width of each bar is 1, compute
-        how much water it can trap after raining.
+        Given n non-negative integers representing an elevation map where the width of
+        each bar is 1, compute how much water it can trap after raining.
 
         Example 1:
         Input: height = [0,1,0,2,1,0,1,3,2,1,2,1]
         Output: 6
-        Explanation: The above elevation map (black section) is represented by array [0,1,0,2,1,0,1,3,2,1,2,1].
-        In this case, 6 units of rain water (blue section) are being trapped.
+        Explanation: The above elevation map (black section) is represented by array
+        [0,1,0,2,1,0,1,3,2,1,2,1]. In this case, 6 units of rain water are being trapped.
 
         Example 2:
         Input: height = [4,2,0,3,2,5]
         Output: 9
+
+        We can visualize the amount of water trapped at index i to be related to the left and
+        right heights. For any given index i with height h, we can store water based on the
+        minimum of the maximum left and right heights.
+
+        For example, if we had index i with height 2 and up to index i, our maximum left height
+        was 1 and maximum right height was 4, we would be able to store 0 water at index i.
+        We can't store any water if there's no "wall" to the left that is taller than h to trap
+        water!
+
+        If h was 1 and left max was 2 and right height was 4, we would be able to store only one
+        unit of water. This is because no matter how tall the taller "wall" is, we can only store
+        up to the lower "wall" without the water spilling away.
+
+        Thus, the formula to calculate the amount of water trapped at any given index i is:
+        min(max left height, max right height) - height[i]
         """
+        # Store max left and max right
+        n = len(height)
+        left_max, right_max = [], [0] * n
+
+        curr_max = 0
+        for h in height:
+            left_max.append(curr_max)
+            curr_max = max(curr_max, h)
+
+        curr_max = 0
+        for i in range(n - 1, -1, -1):
+            right_max[i] = curr_max
+            curr_max = max(curr_max, height[i])
+
+        total_water = 0
+        for i in range(n):
+            min_height = min(left_max[i], right_max[i])
+            if min_height - height[i] > 0:
+                total_water += min_height - height[i]
+
+        return total_water
+
+        # Two pointer approach - we can use the two pointer approach because we only care about
+        # min(left_max[i], right_max[i])
+        left, right = 0, len(height) - 1
+        left_max = right_max = 0
+        total_water = 0
+
+        while left <= right:
+            left_height, right_height = height[left], height[right]
+
+            # We always move the shorter side since that will be the lower "wall"
+            if left_height <= right_height:
+                left_max = max(left_max, left_height)
+                total_water += left_max - left_height
+                left += 1
+            else:
+                right_max = max(right_max, right_height)
+                total_water += right_max - right_height
+                right -= 1
+
+        return total_water

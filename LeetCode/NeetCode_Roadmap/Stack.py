@@ -150,7 +150,6 @@ class Solutions:
         _helper("", 0, 0)
         return result
 
-
     def dailyTemperatures(self, temperatures: List[int]) -> List[int]:
         """
         #739

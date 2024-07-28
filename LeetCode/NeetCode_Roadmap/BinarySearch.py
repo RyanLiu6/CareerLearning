@@ -360,6 +360,35 @@ class Solutions:
                     left = mid + 1
         return False
 
+    def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:
+        """
+        #4. Median of Two Sorted Arrays (HARD)
+
+        Given two sorted arrays nums1 and nums2 of size m and n respectively,
+        return the median of the two sorted arrays.
+
+        The overall run time complexity should be O(log (m+n)).
+
+        Example 1:
+        Input: nums1 = [1,3], nums2 = [2]
+        Output: 2.00000
+        Explanation: merged array = [1,2,3] and median is 2.
+
+        Example 2:
+        Input: nums1 = [1,2], nums2 = [3,4]
+        Output: 2.50000
+        Explanation: merged array = [1,2,3,4] and median is (2 + 3) / 2 = 2.5.
+
+        If L = n + m is odd, then median is combined[L // 2]
+        If L = n + m is even, then median is: (combined[L / 2] + combined[(L / 2) - 1])/2
+
+        Using extra space of O(m + n) would result in run time of O(m + n) as well
+        Since we would be creating a new sorted array -> Can't use this approach
+
+        Even if we have L = n + m, and we only iterate half of it to find the median, the
+        run time would be O(L/2) = O(L) = O(n + m) and not O(log(n + m))
+        """
+
 
 class TimeMap:
     def __init__(self):

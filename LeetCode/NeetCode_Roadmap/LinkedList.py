@@ -1,3 +1,4 @@
+from heapq import heappop, heappush
 from typing import List, Optional
 
 
@@ -407,3 +408,64 @@ class Solutions:
                     fast = nums[fast]
 
                 return slow
+
+    def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
+        """
+        #23. Merge k Sorted Lists (HARD)
+
+        You are given an array of k linked-lists lists, each linked-list is sorted
+        in ascending order.
+
+        Merge all the linked-lists into one sorted linked-list and return it.
+
+        Example 1:
+        Input: lists = [[1,4,5],[1,3,4],[2,6]]
+        Output: [1,1,2,3,4,4,5,6]
+        Explanation: The linked-lists are:
+        [
+            1->4->5,
+            1->3->4,
+            2->6
+        ]
+        merging them into one sorted list:
+        1->1->2->3->4->4->5->6
+        """
+        # Implement merge 2 sorted LinkedLists, then for each two, merge them
+        # Time complexity will be pretty bad since we're repeating work multiple times
+        # But it'll be O(kN) where N is the total number of nodes in all the Linked Lists
+        # If k is 3 then it'll be 1,2 -> (1+2), 3
+        # If k is 5 then it'll be 1,2 -> (1+2), 3 -> (1+2+3), 4 -> (1+2+3+4), 5
+        k = len(lists)
+        if k == 0:
+            return None
+        if k == 1:
+            return lists[0]
+
+        right = 1
+        first = lists[0]
+        while right < k:
+            second = lists[right]
+            first = self.mergeTwoLists(first, second)
+            right += 1
+
+        return first
+
+        # Less passes through the LinkedLists by using a Heapque (minHeap)
+        min_heap = []
+        # O(k)
+        for item in lists:
+            curr = item
+            # O(n) where n = average len(linked lists)
+            while curr:
+                # O(log(n))
+                heappush(min_heap, curr.val)
+                curr = curr.next
+
+        head = ListNode()
+        curr = head
+        while min_heap:
+            # O(log(m)) where m = sum of lengths of all linked lists
+            curr.next = ListNode(heappop(min_heap))
+            curr = curr.next
+
+        return head.next
